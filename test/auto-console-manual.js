@@ -1,13 +1,15 @@
 const Babel = require('@babel/standalone');
-Babel.registerPlugin('autoConsole', require('../lib'));
+const autoConsole = require('../lib');
 
-const source = ``
+Babel.registerPlugin('autoConsole', autoConsole);
 
-const autoConsole = (code) =>
+const source = ``;
+
+const transform = (code) =>
   Babel.transform(code, {
     plugins: ['autoConsole']
   })
     .code.replace(/(\r\n|\n|\r)/gm, '')
     .replace(/ /g, '');
 
-console.log(autoConsole(source));
+console.log(transform(source));

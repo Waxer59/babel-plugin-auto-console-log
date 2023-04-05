@@ -1,6 +1,5 @@
 {
   "name": "auto-console",
-  "type": "module",
   "version": "1.0.0",
   "author": "Waxer59",
   "description": "",
@@ -11,7 +10,7 @@
     "lint": "eslint . --fix",
     "test": "jest test/*.test.js",
     "test:watch": "yarn test --watch",
-    "test:manual": "node test/auto-console-manual.js --watch"
+    "test:manual": "node --watch test/auto-console-manual.js "
   },
   "keywords": [],
   "license": "ISC",
