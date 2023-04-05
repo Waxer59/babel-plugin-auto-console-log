@@ -1,10 +1,10 @@
-# Contributing to autoConsoleLog
+# Contributing to babel-plugin-auto-console-log
 
-Thank you for your interest in contributing to autoConsoleLog! Before getting started, please make sure to read and understand our Code of Conduct.
+Thank you for your interest in contributing to babel-plugin-auto-console-log! Before getting started, please make sure to read and understand our Code of Conduct.
 
 ## General Information
 
-autoConsoleLog is a library that allows adding console.log() calls automatically to different types of expressions, such as identifiers, binary expressions, and conditional expressions. If you wish to contribute, you can do so by adding new features, improving performance, or fixing bugs.
+babel-plugin-auto-console-log is a library that allows adding console.log() calls automatically to different types of expressions, such as identifiers, binary expressions, and conditional expressions. If you wish to contribute, you can do so by adding new features, improving performance, or fixing bugs.
 
 ## How to Contribute
 
@@ -37,4 +37,4 @@ If you encounter a bug or wish to request a new feature, please open a new issue
 
 ## License
 
-autoConsoleLog is under the MIT License. For more details, you can check out our [License file](./LICENSE.md).
+babel-plugin-auto-console-log is under the MIT License. For more details, you can check out our [License file](./LICENSE.md).

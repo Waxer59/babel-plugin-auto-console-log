@@ -1,6 +1,9 @@
 const Babel = require('@babel/standalone');
 
-Babel.registerPlugin('autoConsole', require('../src/cjs/auto-console-log'));
+Babel.registerPlugin(
+  'autoConsole',
+  require('../src/cjs/babel-plugin-auto-console-log')
+);
 const autoConsole = (code) =>
   Babel.transform(code, {
     plugins: ['autoConsole']

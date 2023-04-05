@@ -1,21 +1,21 @@
 {
-  "name": "auto-console-log",
-  "version": "1.0.4",
+  "name": "babel-plugin-auto-console-log",
+  "version": "1.0.5",
   "type": "module",
   "author": "Waxer59",
-  "description": "auto-console-log is a Babel plugin that automatically replaces all calls to console.log() in the code to make debugging and error tracking easier.",
-  "main": "dist/cjs/auto-console-log.js",
-  "module": "dist/esm/auto-console-log.js",
+  "description": "A Babel plugin that adds console.log statements automatically.",
+  "main": "dist/cjs/babel-plugin-auto-console-log.js",
+  "module": "dist/esm/babel-plugin-auto-console-log.js",
   "exports": {
     ".": {
-      "require": "dist/cjs/auto-console-log.js",
-      "default": "dist/esm/auto-console-log.js"
+      "require": "dist/cjs/babel-plugin-auto-console-log.js",
+      "default": "dist/esm/babel-plugin-auto-console-log.js"
     }
   },
-  "homepage": "https://github.com/Waxer59/auto-console-log",
+  "homepage": "https://github.com/Waxer59/babel-plugin-auto-console-log",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Waxer59/auto-console-log.git"
+    "url": "git://github.com/Waxer59/babel-plugin-auto-console-log.git"
   },
   "scripts": {
     "prepare": "husky install",
@@ -23,20 +23,23 @@
     "lint": "eslint . --fix",
     "test": "jest __tests__",
     "test:watch": "yarn test --watch",
-    "test:manual": "node --watch utils/auto-console-log-manual-testting.js",
-    "build": "rollup -c"
+    "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
+    "build": "rollup -c",
+    "prepublishOnly": "yarn build"
   },
   "keywords": [
-    "autoConsole",
-    "auto console",
+    "autoConsolelog",
+    "auto console log",
     "babel plugin",
     "plugin",
-    "babel"
+    "babel",
+    "bable-plugin-auto-console-log"
   ],
   "files": [
     "/dist",
     "README.md",
-    "LICENSE.md"
+    "LICENSE.md",
+    "CONTRIBUTING.md"
   ],
   "license": "MIT",
   "dependencies": {},
