@@ -1,5 +1,5 @@
 const Babel = require('@babel/standalone');
-const autoConsole = require('../lib');
+const autoConsole = require('../src/cjs/auto-console-log');
 
 Babel.registerPlugin('autoConsole', autoConsole);
 

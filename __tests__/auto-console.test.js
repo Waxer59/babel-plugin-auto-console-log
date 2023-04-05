@@ -1,6 +1,6 @@
 const Babel = require('@babel/standalone');
 
-Babel.registerPlugin('autoConsole', require('../lib'));
+Babel.registerPlugin('autoConsole', require('../src/cjs/auto-console-log'));
 const autoConsole = (code) =>
   Babel.transform(code, {
     plugins: ['autoConsole']
@@ -282,6 +282,24 @@ describe('autoConsole', () => {
       'if(10 === 20 || 20 === 30 && 30 > 0){}'
         .replace(/(\r\n|\n|\r)/gm, '')
         .replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to a logical combination expression outside a if statement', () => {
+    const code = '10 === 20 || 20 === 30 && 30 > 0';
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      'console.log(10 === 20 || 20 === 30 && 30 > 0);'
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a logical combination expression inside a while loop', () => {
+    const code = 'while(10>20){}';
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      'while(10>20){}'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
     );
   });
 });
