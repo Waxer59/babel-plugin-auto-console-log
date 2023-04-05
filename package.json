@@ -1,6 +1,6 @@
 {
   "name": "auto-console-log",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "author": "Waxer59",
   "description": "autoConsole is a Babel plugin that automatically replaces all calls to console.log() in the code to make debugging and error tracking easier.",
