@@ -8,8 +8,6 @@ const source = ``;
 const transform = (code) =>
   Babel.transform(code, {
     plugins: ['autoConsole']
-  })
-    .code.replace(/(\r\n|\n|\r)/gm, '')
-    .replace(/ /g, '');
+  }).code;
 
 console.log(transform(source));

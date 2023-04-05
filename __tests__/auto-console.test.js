@@ -274,4 +274,14 @@ describe('autoConsole', () => {
         .replace(/ /g, '')
     );
   });
+
+  test('Doesnt add console.log to a logical combination expression inside a if statement', () => {
+    const code = 'if(10 === 20 || 20 === 30 && 30 > 0){}';
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      'if(10 === 20 || 20 === 30 && 30 > 0){}'
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
 });
