@@ -9,7 +9,8 @@
     "prepare": "husky install",
     "format": "prettier --write .",
     "lint": "eslint . --fix",
-    "test": "jest test/*.test.js --watch"
+    "test": "jest test/*.test.js",
+    "test:watch": "yarn test --watch"
   },
   "keywords": [],
   "license": "ISC",
