@@ -12,10 +12,10 @@
       "default": "dist/esm/auto-console-log.js"
     }
   },
-  "homepage": "https://github.com/Waxer59/auto-console",
+  "homepage": "https://github.com/Waxer59/auto-console-log",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Waxer59/auto-console.git"
+    "url": "git://github.com/Waxer59/auto-console-log.git"
   },
   "scripts": {
     "prepare": "husky install",
