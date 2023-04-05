@@ -1,15 +1,15 @@
 {
   "name": "auto-console-log",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "author": "Waxer59",
   "description": "autoConsole is a Babel plugin that automatically replaces all calls to console.log() in the code to make debugging and error tracking easier.",
-  "main": "./dist/cjs/auto-console-log.js",
-  "module": "./dist/esm/auto-console-log.js",
+  "main": "./cjs/auto-console-log.js",
+  "module": "./esm/auto-console-log.js",
   "exports": {
     ".": {
-      "require": "./dist/cjs/auto-console-log.js",
-      "default": "./dist/esm/auto-console-log.js"
+      "require": "./cjs/auto-console-log.js",
+      "default": "./esm/auto-console-log.js"
     }
   },
   "homepage": "https://github.com/Waxer59/auto-console",
