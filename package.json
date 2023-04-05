@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "lint": "eslint . --fix",
     "test": "jest test/*.test.js",
-    "test:watch": "yarn test --watch"
+    "test:watch": "yarn test --watch",
+    "test:manual": "node test/auto-console-manual.js --watch"
   },
   "keywords": [],
   "license": "ISC",
