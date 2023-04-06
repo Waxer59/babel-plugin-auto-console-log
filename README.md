@@ -135,6 +135,6 @@ console.log(sayHi("foo"));
 
 Thank you for your interest in contributing to babel-plugin-auto-console-log! We appreciate your support and welcome any contributions to this project.
 
-To get started, please refer to the CONTRIBUTING.md file for guidelines on how to contribute to this project.
+To get started, please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file for guidelines on how to contribute to this project.
 
 Once again, thank you for your interest in contributing to babel-plugin-auto-console-log!
