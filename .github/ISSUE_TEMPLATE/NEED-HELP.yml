@@ -1,0 +1,58 @@
+name: "🆘 Need Help"
+description: Request help from the community.
+title: "🆘 [HELP] - <title>"
+labels: [
+  "help"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "📝 Problem Description"
+      description: Please enter an explicit description of your problem
+      placeholder: Short and explicit description of your problem...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: "📋 Reproduction Steps"
+      description: Please enter the steps to reproduce your issue
+      value: |
+        1. '...'
+        2. '....'
+        3. '....'
+      render: bash
+    validations:
+      required: false
+  - type: input
+    id: version_plugin
+    attributes:
+      label: 🖥️ Plugin version
+      description: Type the version of the plugin you are using.
+      placeholder: ex. v1.0.0
+    validations:
+      required: false
+  - type: input
+    id: version_node
+    attributes:
+      label: 🖥️ Node version
+      description: Type the version of Node you are using.
+      placeholder: ex. v17.0.0
+    validations:
+      required: false
+  - type: textarea
+    id: usage
+    attributes:
+      label: "💻 Code usage"
+      description: Please provide an example of how you are using the plugin in your code
+      placeholder: Example code usage...
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: "📄 Additional Information"
+      description: Any additional information that may be relevant to resolving the issue.
+    validations:
+      required: false
