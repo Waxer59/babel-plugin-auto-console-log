@@ -1,0 +1,57 @@
+name: "✨ Feature Report"
+description: Suggest a new feature or enhancement to the plugin.
+title: "✨ [FEATURE] - <title>"
+labels: [
+  "feature"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "📝 Feature Description"
+      description: Please enter an explicit description of the new feature.
+      placeholder: Short and explicit description of the feature...
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: "👀 Example of Use"
+      description: Please provide an example of how this feature would be used.
+      placeholder: Brief example of how the feature would be used...
+    validations:
+      required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: "📋 Use Case"
+      description: Please describe a real-world scenario where this feature would be useful.
+      placeholder: Short and explicit description of the use case...
+    validations:
+      required: true
+  - type: input
+    id: pr
+    attributes:
+      label: "📝 Implementation PR"
+      description: If applicable, please link to the pull request that implements this feature.
+      placeholder: "#Pull Request ID"
+    validations:
+      required: false
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "⚡ Priority"
+      description: Please select the priority of this feature.
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: "📄 Additional Information"
+      description: Any additional information that may be relevant to this feature request.
+    validations:
+      required: false

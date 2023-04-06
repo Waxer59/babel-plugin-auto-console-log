@@ -1,0 +1,86 @@
+name: "🐛 Bug Report"
+description: Create a new ticket for a bug.
+title: "🐛 [BUG] - <title>"
+labels: [
+  "bug"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "📝 Issue Description"
+      description: Please enter an explicit description of your issue
+      placeholder: Short and explicit description of your incident...
+    validations:
+      required: true
+  - type: textarea
+    id: reprod
+    attributes:
+      label: "📋 Steps to Reproduce"
+      description: Please enter an explicit description of your issue
+      value: |
+        1. '...'
+        2. '....'
+        3. '....'
+        4. error!
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "🤔 Expected Behavior"
+      description: Please describe what the expected behavior of the plugin in this situation should be.
+      placeholder: Short and explicit description of your incident...
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: "👀 Current Behavior"
+      description: Please describe what the current behavior of the plugin in this situation is.
+      placeholder: Short and explicit description of the current behavior...
+    validations:
+      required: true
+  - type: input
+    id: pr
+    attributes:
+      label: 📝 Implementation PR
+      description: Pull request used.
+      placeholder: "#Pull Request ID"
+    validations:
+      required: false
+  - type: input
+    id: version_plugin
+    attributes:
+      label: 🖥️ Plugin version
+      description: Type the version of the plugin you are using.
+      placeholder: ex. v1.0.0
+    validations:
+      required: true
+  - type: input
+    id: version_node
+    attributes:
+      label: 🖥️ Node version
+      description: Type the version of Node you are using.
+      placeholder: ex. v17.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: "🖥️ OS"
+      description: What is the impacted environment ?
+      multiple: true
+      options:
+        - Windows
+        - Linux
+        - Mac
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: "📄 Additional Information"
+      description: Any additional information that may be relevant to resolving the issue.
+    validations:
+      required: false
