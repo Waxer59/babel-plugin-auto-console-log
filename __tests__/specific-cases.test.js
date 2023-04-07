@@ -11,7 +11,7 @@ const autoConsole = (code) =>
     .code.replace(/(\r\n|\n|\r)/gm, '')
     .replace(/ /g, '');
 
-describe('autoConsole', () => {
+describe('Specific cases', () => {
   test('Does not replace console.log', () => {
     const code = 'console.log("Hello, world!");';
     const transformed = autoConsole(code);
@@ -324,6 +324,108 @@ describe('autoConsole', () => {
       'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); console.log(i++); }'
         .replace(/(\r\n|\n|\r)/gm, '')
         .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to logical expressions on the argument of a loop', () => {
+    const code = `for (let i = 0; i < 10 || 20; i++) {}
+      while(10>20 || 23 && 23){}
+      do{}while(10>20 || 23 && 23);`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `for (let i = 0; i < 10 || 20; i++) {}
+      while(10>20 || 23 && 23){}
+      do{}while(10>20 || 23 && 23);`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to logical expressions on the argument of a conditional', () => {
+    const code = `const a = 20; if(1 || 2 && 3 || a){}else if(1 || 2 && 3 || a){}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const a = 20; if(1 || 2 && 3 || a){}else if(1 || 2 && 3 || a){}`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to a member expression', () => {
+    const code = `const string = "Hello"; string[0]; const number = 2; string[number]; string[0][2]`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const string = "Hello"; console.log(string[0]); const number = 2; console.log(string[number]); console.log(string[0][2]);`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to a unary expression', () => {
+    const code = `![2,3,4][0];`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `console.log(![2, 3, 4][0]);`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to logical assigment (OR & AND)', () => {
+    const code = `const a = { duration: 50, title: '' };a.duration ??= 10 ? 20 : 20; a.duration ||= 10 ? 20 : 20;`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const a = { duration: 50, title: '' };console.log(a.duration ??= 10 ? 20 : 20); console.log(a.duration ||= 10 ? 20 : 20);`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a assigment inside a for attribute', () => {
+    const code = `for (let i = 0; i < 10 || 20 || 230 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `for (let i = 0; i < 10 || 20 || 230 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a ternary condition inside a for attribute', () => {
+    const code = `for (let i = 0; 0 ? 0 : 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `for (let i = 0; 0 ? 0 : 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a OR & AND condition inside a for attribute', () => {
+    const code = `for (let i = 0; 0 || 0 && 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `for (let i = 0; 0 || 0 && 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a update operator inside a while loop', () => {
+    const code = `let a = 0; while(a+=2){} while(a++){}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `let a = 0; while(a+=2){} while(a++){}`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to a update operator inside a if', () => {
+    const code = `let a = 0; if(a++){}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `let a = 0; if(a++){}`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
     );
   });
 });

@@ -13,6 +13,7 @@
     "semi": [2, "always"],
     "no-undef": 0,
     "new-cap": 0,
-    "no-useless-escape": 0
+    "no-useless-escape": 0,
+    "no-template-curly-in-string": 0
   }
 }

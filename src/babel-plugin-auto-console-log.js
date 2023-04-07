@@ -1,5 +1,9 @@
 const autoConsole = function autoConsole(babel) {
   const { types: t } = babel;
+  const replacement = t.memberExpression(
+    t.identifier('console'),
+    t.identifier('log')
+  );
   return {
     visitor: {
       CallExpression(path) {
@@ -9,12 +13,7 @@ const autoConsole = function autoConsole(babel) {
           path.skip();
           return;
         }
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('console'), t.identifier('log')),
-            [path.node]
-          )
-        );
+        path.replaceWith(t.callExpression(replacement, [path.node]));
       },
       Identifier(path) {
         const { node } = path;
@@ -22,18 +21,13 @@ const autoConsole = function autoConsole(babel) {
           t.isSwitchStatement(path.parent) ||
           t.isLoop(path.parentPath.parent) ||
           t.isIfStatement(path.parent) ||
-          t.isUpdateExpression(path.parentPath)
+          t.isExpression(path.parentPath)
         ) {
           path.skip();
           return;
         }
         if (path.scope.hasBinding(node.name) && path.isReferencedIdentifier()) {
-          path.replaceWith(
-            t.callExpression(
-              t.memberExpression(t.identifier('console'), t.identifier('log')),
-              [path.node]
-            )
-          );
+          path.replaceWith(t.callExpression(replacement, [path.node]));
         }
       },
       BinaryExpression(path) {
@@ -45,12 +39,7 @@ const autoConsole = function autoConsole(babel) {
           path.skip();
           return;
         }
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('console'), t.identifier('log')),
-            [path.node]
-          )
-        );
+        path.replaceWith(t.callExpression(replacement, [path.node]));
       },
       ArrowFunctionExpression(path) {
         path.skip();
@@ -70,36 +59,50 @@ const autoConsole = function autoConsole(babel) {
         }
       },
       LogicalExpression(path) {
-        if (t.isConditional(path.parent)) {
+        if (t.isConditional(path.parent) || t.isLoop(path.parent)) {
           path.skip();
           return;
         }
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('console'), t.identifier('log')),
-            [path.node]
-          )
-        );
+        path.replaceWith(t.callExpression(replacement, [path.node]));
       },
       ConditionalExpression(path) {
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('console'), t.identifier('log')),
-            [path.node]
-          )
-        );
-      },
-      UpdateExpression(path) {
-        if (t.isLoop(path.parentPath)) {
+        if (
+          t.isConditionalExpression(path.parentPath) ||
+          t.isLoop(path.parentPath) ||
+          t.isConditional(path.parent)
+        ) {
           path.skip();
           return;
         }
-        path.replaceWith(
-          t.callExpression(
-            t.memberExpression(t.identifier('console'), t.identifier('log')),
-            [path.node]
-          )
-        );
+        path.replaceWith(t.callExpression(replacement, [path.node]));
+      },
+      UpdateExpression(path) {
+        if (
+          t.isConditionalExpression(path.parentPath) ||
+          t.isLoop(path.parentPath) ||
+          t.isConditional(path.parent)
+        ) {
+          path.skip();
+          return;
+        }
+        path.replaceWith(t.callExpression(replacement, [path.node]));
+      },
+      AssignmentExpression(path) {
+        if (
+          t.isConditionalExpression(path.parentPath) ||
+          t.isLoop(path.parentPath) ||
+          t.isConditional(path.parent)
+        ) {
+          path.skip();
+          return;
+        }
+        path.replaceWith(t.callExpression(replacement, [path.node]));
+      },
+      UnaryExpression(path) {
+        path.replaceWith(t.callExpression(replacement, [path.node]));
+      },
+      MemberExpression(path) {
+        path.replaceWith(t.callExpression(replacement, [path.node]));
       }
     }
   };

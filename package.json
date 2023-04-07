@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-auto-console-log",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "author": "Waxer59",
   "description": "A Babel plugin that adds console.log statements automatically.",
@@ -37,9 +37,7 @@
   ],
   "files": [
     "/dist",
-    "README.md",
-    "LICENSE.md",
-    "CONTRIBUTING.md"
+    "LICENSE.md"
   ],
   "license": "MIT",
   "dependencies": {},
