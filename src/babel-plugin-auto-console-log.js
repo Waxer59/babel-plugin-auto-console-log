@@ -21,7 +21,8 @@ const autoConsole = function autoConsole(babel) {
         if (
           t.isSwitchStatement(path.parent) ||
           t.isLoop(path.parentPath.parent) ||
-          t.isIfStatement(path.parent)
+          t.isIfStatement(path.parent) ||
+          t.isUpdateExpression(path.parentPath)
         ) {
           path.skip();
           return;
@@ -87,9 +88,21 @@ const autoConsole = function autoConsole(babel) {
             [path.node]
           )
         );
+      },
+      UpdateExpression(path) {
+        if (t.isLoop(path.parentPath)) {
+          path.skip();
+          return;
+        }
+        path.replaceWith(
+          t.callExpression(
+            t.memberExpression(t.identifier('console'), t.identifier('log')),
+            [path.node]
+          )
+        );
       }
     }
   };
 };
 
-module.exports = autoConsole;
+export default autoConsole;

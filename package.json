@@ -1,15 +1,15 @@
 {
   "name": "babel-plugin-auto-console-log",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "author": "Waxer59",
   "description": "A Babel plugin that adds console.log statements automatically.",
-  "main": "dist/cjs/babel-plugin-auto-console-log.js",
-  "module": "dist/esm/babel-plugin-auto-console-log.js",
+  "main": "dist/babel-plugin-auto-console-log.cjs",
+  "module": "dist/babel-plugin-auto-console-log.js",
   "exports": {
     ".": {
-      "require": "dist/cjs/babel-plugin-auto-console-log.js",
-      "default": "dist/esm/babel-plugin-auto-console-log.js"
+      "require": "dist/babel-plugin-auto-console-log.cjs",
+      "default": "dist/babel-plugin-auto-console-log.js"
     }
   },
   "homepage": "https://github.com/Waxer59/babel-plugin-auto-console-log",
@@ -21,7 +21,7 @@
     "prepare": "husky install",
     "format": "prettier --write .",
     "lint": "eslint . --fix",
-    "test": "jest __tests__",
+    "test": "yarn build && jest __tests__",
     "test:watch": "yarn test --watch",
     "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
     "build": "rollup -c",

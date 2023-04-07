@@ -1,4 +1,4 @@
-import autoConsoleLog from '../src/cjs/babel-plugin-auto-console-log.js';
+import autoConsoleLog from '../src/babel-plugin-auto-console-log.js';
 import Babel from '@babel/standalone';
 
 Babel.registerPlugin('autoConsoleLog', autoConsoleLog);

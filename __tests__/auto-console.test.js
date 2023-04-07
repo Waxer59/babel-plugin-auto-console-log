@@ -2,7 +2,7 @@ const Babel = require('@babel/standalone');
 
 Babel.registerPlugin(
   'autoConsole',
-  require('../src/cjs/babel-plugin-auto-console-log')
+  require('../dist/babel-plugin-auto-console-log.cjs')
 );
 const autoConsole = (code) =>
   Babel.transform(code, {
@@ -303,6 +303,27 @@ describe('autoConsole', () => {
     const transformed = autoConsole(code);
     expect(transformed).toBe(
       'while(10>20){}'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to a update operator', () => {
+    const code = 'let a = 0; a++';
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      'let a = 0;console.log(a++);'
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Add console.log to a update operator inside a loop', () => {
+    const code =
+      'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); i++; }';
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); console.log(i++); }'
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
     );
   });
 });
