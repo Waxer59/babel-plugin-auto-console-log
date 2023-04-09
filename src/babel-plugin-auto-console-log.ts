@@ -2,13 +2,16 @@ import { PluginObj } from '@babel/core';
 import { IOptions } from './interfaces/options.interface';
 import * as types from '@babel/types';
 
-const autoConsole = function autoConsole(options: IOptions) {
-  console.log(options);
+const DEFAULT_OPTIONS: IOptions = {
+  consoleMethod: 'log',
+  consoleObject: 'console'
+};
 
+const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
   return ({ types: t }: { types: typeof types }): PluginObj => {
     const replacement = t.memberExpression(
-      t.identifier('console'),
-      t.identifier('log')
+      t.identifier(options.consoleObject),
+      t.identifier(options.consoleMethod)
     );
     return {
       name: 'auto-console-log',

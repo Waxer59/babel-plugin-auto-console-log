@@ -34,7 +34,7 @@ npm i @babel/standalone babel-plugin-auto-console-log --save-dev
 import Babel from '@babel/standalone';
 import autoConsoleLog from 'babel-plugin-auto-console-log';
 
-Babel.registerPlugin('autoConsoleLog', autoConsoleLog);
+Babel.registerPlugin('autoConsoleLog', autoConsoleLog());
 ```
 
 3. Create a function to transform your code:
@@ -53,7 +53,7 @@ const transform = (source) =>
 import Babel from '@babel/standalone';
 import autoConsoleLog from 'auto-console-log';
 
-Babel.registerPlugin('autoConsoleLog', autoConsoleLog);
+Babel.registerPlugin('autoConsoleLog', autoConsoleLog());
 
 const transform = (source) =>
     Babel.transform(source, {
