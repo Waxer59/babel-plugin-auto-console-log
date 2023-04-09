@@ -24,7 +24,7 @@
     "test": "yarn build && jest __tests__",
     "test:watch": "yarn test --watch",
     "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
-    "build": "rollup -c",
+    "build": "tsc && rollup -c",
     "prepublishOnly": "yarn build"
   },
   "keywords": [
@@ -48,6 +48,9 @@
     "@babel/template": "7.20.7",
     "@babel/traverse": "7.21.4",
     "@babel/types": "7.21.4",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
     "eslint": "8.0.1",
     "eslint-config-prettier": "8.8.0",
     "eslint-config-standard": "17.0.0",
@@ -59,7 +62,8 @@
     "lint-staged": "13.2.0",
     "prettier": "2.8.7",
     "rollup": "^3.20.2",
-    "rollup-plugin-delete": "^2.0.0"
+    "rollup-plugin-delete": "^2.0.0",
+    "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.js": [

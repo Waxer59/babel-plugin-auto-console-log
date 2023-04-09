@@ -1,7 +1,7 @@
 import autoConsoleLog from '../src/babel-plugin-auto-console-log.js';
 import Babel from '@babel/standalone';
 
-Babel.registerPlugin('autoConsoleLog', autoConsoleLog);
+Babel.registerPlugin('autoConsoleLog', autoConsoleLog('HI'));
 
 const source = ``;
 
