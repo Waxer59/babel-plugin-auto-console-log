@@ -29,7 +29,7 @@
     "test:watch": "yarn test --watch",
     "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
     "build": "rimraf build && tsc && rimraf dist && rollup -c",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn test && yarn build"
   },
   "keywords": [
     "autoConsolelog",
