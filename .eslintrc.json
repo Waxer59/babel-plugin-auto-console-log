@@ -23,6 +23,7 @@
     "new-cap": 0,
     "no-useless-escape": 0,
     "no-template-curly-in-string": 0,
-    "@typescript-eslint/no-explicit-any": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-var-requires": 0
   }
 }

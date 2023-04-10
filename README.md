@@ -33,15 +33,16 @@ npm i @babel/standalone babel-plugin-auto-console-log --save-dev
 ```javascript
 import Babel from '@babel/standalone';
 import autoConsoleLog from 'babel-plugin-auto-console-log';
+// const autoConsoleLog = require("babel-plugin-auto-console-log")
 
-Babel.registerPlugin('auto-console-log', autoConsoleLog());
+Babel.registerPlugin('babel-plugin-auto-console-log', autoConsoleLog());
 ```
 
 3. Create a function to transform your code:
 ```javascript
 const transform = (source) =>
     Babel.transform(source, {
-      plugins: ['auto-console-log']
+      plugins: ['babel-plugin-auto-console-log']
     }).code;
 ```
 
@@ -51,14 +52,37 @@ const transform = (source) =>
 
 ```javascript
 import Babel from '@babel/standalone';
-import autoConsoleLog from 'auto-console-log';
+import autoConsoleLog from 'babel-plugin-auto-console-log';
+// const autoConsoleLog = require("babel-plugin-auto-console-log")
 
-Babel.registerPlugin('auto-console-log', autoConsoleLog());
+Babel.registerPlugin('babel-plugin-auto-console-log', autoConsoleLog());
 
 const transform = (source) =>
     Babel.transform(source, {
-      plugins: ['auto-console-log']
+      plugins: ['babel-plugin-auto-console-log']
     }).code;
+```
+
+## Options
+
+* `consoleMethod` ***default: log*** : The **consoleMethod** parameter is used to specify the logging method to be used to print the output of a function. For example, if "warn" is provided as the value for the **consoleMethod** parameter, the output will be printed with the "< consoleObject >.warn" method instead of the default console.log method.
+
+* `consoleObject` ***default: console*** : The **consoleObject** parameter is an argument that can be provided to a function and its purpose is to specify the console object that will be used to print the output of the function. For example if "logger" is the given value the output will be "logger.< consoleMethod >".
+
+## Constants
+
+### CONSOLE_METHODS 
+
+**CONSOLE_METHODS** gives you a list of all the methods that console has, so that you don't make a mistake when using a method other than "log".
+
+To use this constant you must import it from **"babel-plugin-auto-console-log/constants"** as follows: 
+
+```javascript
+import { CONSOLE_METHODS } from "babel-plugin-auto-console-log/constants"
+
+// or 
+
+const { CONSOLE_METHODS } = require("babel-plugin-auto-console-log/constants")
 ```
 
 # Examples
