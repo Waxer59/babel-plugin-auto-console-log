@@ -18,7 +18,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
       visitor: {
         CallExpression(path: any) {
           const { node } = path;
-          if (node.callee.object?.name === 'console') {
+          if (node.callee.object?.name === options.consoleObject) {
             path.skip();
             return;
           }

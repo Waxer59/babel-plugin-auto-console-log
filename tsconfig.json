@@ -4,9 +4,9 @@
     "moduleResolution": "node",
     "module": "ESNext",
     "sourceMap": true,
-    "outDir": "./src/build",
+    "outDir": "./build",
     "strict": true
   },
-  "include": ["src/*"],
+  "include": ["src/"],
   "exclude": ["node_modules"]
 }

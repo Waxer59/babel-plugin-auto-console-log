@@ -10,6 +10,10 @@
     ".": {
       "require": "dist/babel-plugin-auto-console-log.cjs",
       "default": "dist/babel-plugin-auto-console-log.js"
+    },
+    "constants": {
+      "require": "dist/constants/constants.cjs",
+      "default": "dist/constants/constants.js"
     }
   },
   "homepage": "https://github.com/Waxer59/babel-plugin-auto-console-log",
@@ -24,7 +28,7 @@
     "test": "yarn build && jest __tests__",
     "test:watch": "yarn test --watch",
     "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
-    "build": "tsc && rollup -c",
+    "build": "rimraf build && tsc && rimraf dist &&rollup -c",
     "prepublishOnly": "yarn build"
   },
   "keywords": [
@@ -62,7 +66,6 @@
     "lint-staged": "13.2.0",
     "prettier": "2.8.7",
     "rollup": "^3.20.2",
-    "rollup-plugin-delete": "^2.0.0",
     "typescript": "^5.0.4"
   },
   "lint-staged": {

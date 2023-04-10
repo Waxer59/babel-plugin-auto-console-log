@@ -34,14 +34,14 @@ npm i @babel/standalone babel-plugin-auto-console-log --save-dev
 import Babel from '@babel/standalone';
 import autoConsoleLog from 'babel-plugin-auto-console-log';
 
-Babel.registerPlugin('autoConsoleLog', autoConsoleLog());
+Babel.registerPlugin('auto-console-log', autoConsoleLog());
 ```
 
 3. Create a function to transform your code:
 ```javascript
 const transform = (source) =>
     Babel.transform(source, {
-      plugins: ['autoConsoleLog']
+      plugins: ['auto-console-log']
     }).code;
 ```
 
@@ -53,11 +53,11 @@ const transform = (source) =>
 import Babel from '@babel/standalone';
 import autoConsoleLog from 'auto-console-log';
 
-Babel.registerPlugin('autoConsoleLog', autoConsoleLog());
+Babel.registerPlugin('auto-console-log', autoConsoleLog());
 
 const transform = (source) =>
     Babel.transform(source, {
-      plugins: ['autoConsoleLog']
+      plugins: ['auto-console-log']
     }).code;
 ```
 
