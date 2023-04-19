@@ -123,7 +123,11 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         MemberExpression(path: any) {
           const { node } = path;
           path.replaceWith(t.callExpression(replacement, [node]));
-        }
+        },
+        AwaitExpression(path: any) {
+          const { node } = path;
+          path.replaceWith(t.callExpression(replacement, [node]));
+        },
       }
     };
   };
