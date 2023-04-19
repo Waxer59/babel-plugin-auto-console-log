@@ -428,4 +428,14 @@ describe('Specific cases', () => {
       `let a = 0; if(a++){}`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
     );
   });
+
+  test('Add console.log to a await operator', () => {
+    const code = `await test();`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `console.log(await test());`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
 });
