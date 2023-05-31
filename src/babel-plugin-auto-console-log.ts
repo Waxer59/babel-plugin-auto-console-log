@@ -17,8 +17,8 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
       name: 'auto-console-log',
       visitor: {
         CallExpression(path: any) {
-          const { node } = path;
-          if (node.callee.object?.name === options.consoleObject) {
+          const { node, parent } = path;
+          if (node.callee.object?.name === options.consoleObject || t.isIfStatement(parent)) {
             path.skip();
             return;
           }
@@ -127,7 +127,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         AwaitExpression(path: any) {
           const { node } = path;
           path.replaceWith(t.callExpression(replacement, [node]));
-        },
+        }
       }
     };
   };
