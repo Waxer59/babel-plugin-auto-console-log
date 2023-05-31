@@ -450,4 +450,28 @@ describe('Specific cases', () => {
         .replace(/ /g, '')
     );
   });
+
+  test('Doesnt add console.log to unaryExp inside a if statement', () => {
+    const code = `const message = "!asd"
+    if(!message.includes("asd")){}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const message = "!asd";
+      if(!message.includes("asd")){}`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to unaryExp inside a if statement', () => {
+    const code = `const message = "!asd"
+    if(message.includes){}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const message = "!asd";
+      if(message.includes){}`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
 });
