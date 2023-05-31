@@ -117,11 +117,19 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
           path.replaceWith(t.callExpression(replacement, [node]));
         },
         UnaryExpression(path: any) {
-          const { node } = path;
+          const { node, parent } = path;
+          if( t.isIfStatement(parent)){
+            path.skip();
+            return;
+          }
           path.replaceWith(t.callExpression(replacement, [node]));
         },
         MemberExpression(path: any) {
-          const { node } = path;
+          const { node, parent } = path;
+          if( t.isIfStatement(parent)){
+            path.skip();
+            return;
+          }
           path.replaceWith(t.callExpression(replacement, [node]));
         },
         AwaitExpression(path: any) {
