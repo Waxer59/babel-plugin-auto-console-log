@@ -9,11 +9,11 @@ The main goal of babel-plugin-auto-console-log is to make code debugging easier 
 ```bash
 npm i babel-plugin-auto-console-log --save-dev
 
-or
+# or
 
 yarn add babel-plugin-auto-console-log -D 
 
-or
+# or
 
 pnpm i babel-plugin-auto-console-log --dev
 ```
