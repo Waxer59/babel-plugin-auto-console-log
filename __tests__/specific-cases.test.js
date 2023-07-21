@@ -474,4 +474,14 @@ describe('Specific cases', () => {
         .replace(/ /g, '')
     );
   });
+
+  test('Doesnt add console.log to switch case', () => {
+    const code = `switch(true){ case 1==1: break; case 2==2: break; default: break; }`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `switch(true){ case 1==1: break; case 2==2: break; default: break; }`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
 });

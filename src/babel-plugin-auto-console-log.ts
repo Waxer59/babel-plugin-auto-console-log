@@ -47,7 +47,8 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
           if (
             t.isConditionalExpression(parentPath) ||
             t.isLoop(parentPath) ||
-            t.isConditional(parent)
+            t.isConditional(parent) ||
+            t.isSwitchCase(parent)
           ) {
             path.skip();
             return;

@@ -1,0 +1,27 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  update-index:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+      
+      - name: Install deps
+        run: yarn
+
+      - name: Build the site
+        run: yarn build
+      
+      - name: Lint code
+        run: yarn lint
+      
+      - name: Execute tests
+        run: yarn test

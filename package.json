@@ -27,7 +27,7 @@
     "lint": "eslint . --fix",
     "test": "yarn build && jest __tests__",
     "test:watch": "yarn test --watch",
-    "test:manual": "node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
+    "test:manual": "yarn build && node --watch utils/babel-plugin-auto-console-log-manual-testting.js",
     "build": "rimraf build && tsc && rimraf dist && rollup -c",
     "prepublishOnly": "yarn test && yarn build"
   },
