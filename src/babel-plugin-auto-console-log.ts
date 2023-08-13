@@ -18,7 +18,10 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
       visitor: {
         CallExpression(path: any) {
           const { node, parent } = path;
-          if (node.callee.object?.name === options.consoleObject || t.isIfStatement(parent)) {
+          if (
+            node.callee.object?.name === options.consoleObject ||
+            t.isIfStatement(parent)
+          ) {
             path.skip();
             return;
           }
@@ -30,7 +33,8 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
             t.isSwitchStatement(parent) ||
             t.isLoop(parentPath.parent) ||
             t.isIfStatement(parent) ||
-            t.isExpression(parentPath)
+            t.isExpression(parentPath) ||
+            t.isLoop(parent)
           ) {
             path.skip();
             return;
@@ -119,7 +123,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         },
         UnaryExpression(path: any) {
           const { node, parent } = path;
-          if( t.isIfStatement(parent)){
+          if (t.isIfStatement(parent)) {
             path.skip();
             return;
           }
@@ -127,7 +131,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         },
         MemberExpression(path: any) {
           const { node, parent } = path;
-          if( t.isIfStatement(parent)){
+          if (t.isIfStatement(parent)) {
             path.skip();
             return;
           }
