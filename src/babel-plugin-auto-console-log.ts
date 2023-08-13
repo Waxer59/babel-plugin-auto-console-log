@@ -20,7 +20,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
           const { node, parent } = path;
           if (
             node.callee.object?.name === options.consoleObject ||
-            t.isIfStatement(parent)
+            t.isIfStatement(parent) || t.isLoop(parent)
           ) {
             path.skip();
             return;
@@ -131,7 +131,7 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         },
         MemberExpression(path: any) {
           const { node, parent } = path;
-          if (t.isIfStatement(parent)) {
+          if (t.isIfStatement(parent) || t.isLoop(parent)) {
             path.skip();
             return;
           }
