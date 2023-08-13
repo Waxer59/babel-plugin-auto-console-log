@@ -484,4 +484,28 @@ describe('Specific cases', () => {
         .replace(/ /g, '')
     );
   });
+
+  test('Doesnt add console.log to forof', () => {
+    const code = `const json = {};
+    for (const el of json){console.log(el)};`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const json = {};
+       for (const el of json) {console.log(el);};`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
+
+  test('Doesnt add console.log to forin', () => {
+    const code = `const json = {};
+    for (const el in json) {console.log(el);};`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const json = {};
+       for (const el in json){console.log(el);};`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
+    );
+  });
 });
