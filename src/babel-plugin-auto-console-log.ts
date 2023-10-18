@@ -140,6 +140,10 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         AwaitExpression(path: any) {
           const { node } = path;
           path.replaceWith(t.callExpression(replacement, [node]));
+        },
+        NewExpression(path: any) {
+          const { node } = path;
+          path.replaceWith(t.callExpression(replacement, [node]));
         }
       }
     };

@@ -524,4 +524,12 @@ describe('Specific cases', () => {
         .replace(/ /g, '')
     );
   });
+
+  test('Should add console.log to a new expression', () => {
+    const code = `new Date()`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `console.log(new Date())`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
+    );
+  });
 });
