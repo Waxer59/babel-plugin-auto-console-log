@@ -525,11 +525,11 @@ describe('Specific cases', () => {
     );
   });
 
-  test('Should add console.log to a new expression', () => {
+  test('Should add console.log to a New keyword expression', () => {
     const code = `new Date()`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `console.log(new Date())`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
+      `console.log(new Date());`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
     );
   });
 });
