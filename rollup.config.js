@@ -16,16 +16,16 @@ export default [
     ]
   },
   {
-    input: './build/constants/constants.js',
+    input: './build/constants/index.js',
     plugins: [typescript({ sourceMap: false })],
     output: [
       {
         format: 'es',
-        file: './dist/constants/constants.js'
+        file: './dist/constants/index.js'
       },
       {
         format: 'cjs',
-        file: './dist/constants/constants.cjs'
+        file: './dist/constants/index.cjs'
       }
     ]
   }

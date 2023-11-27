@@ -3,11 +3,7 @@ import Babel from '@babel/standalone';
 
 Babel.registerPlugin('auto-console-log', autoConsoleLog());
 
-const source = `
-
-new Date()
-
-`;
+const source = ``;
 
 const transform = (code) =>
   Babel.transform(code, {
