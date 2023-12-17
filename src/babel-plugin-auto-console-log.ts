@@ -20,7 +20,8 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
           const { node, parent } = path;
           if (
             node.callee.object?.name === options.consoleObject ||
-            t.isIfStatement(parent) || t.isLoop(parent)
+            t.isIfStatement(parent) ||
+            t.isLoop(parent)
           ) {
             path.skip();
             return;
@@ -66,6 +67,9 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
           path.skip();
         },
         VariableDeclarator(path: any) {
+          path.skip();
+        },
+        ArrayExpression(path: any) {
           path.skip();
         },
         ExpressionStatement(path: any) {
