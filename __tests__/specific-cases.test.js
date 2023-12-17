@@ -532,4 +532,12 @@ describe('Specific cases', () => {
       `console.log(new Date());`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
     );
   });
+
+  test('Should add console.log to a rest operator in a array', () => {
+    const code = `[1,2,...test]`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `[1,2,...test];`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
+    );
+  });
 });
