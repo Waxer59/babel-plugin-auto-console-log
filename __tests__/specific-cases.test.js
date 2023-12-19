@@ -98,7 +98,7 @@ describe('Specific cases', () => {
     );
   });
 
-  test('Replace non-console.log calls with console.log inside an if statement', () => {
+  test('Should not add console.log inside an if statement', () => {
     const code = 'if (true) { alert("Hello, world!"); }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
@@ -538,6 +538,16 @@ describe('Specific cases', () => {
     const transformed = autoConsole(code);
     expect(transformed).toBe(
       `[1,2,...test];`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
+    );
+  });
+
+  test('Should not add console.log to a labeled stmt', () => {
+    const code = `const test = 0; {a: test}`;
+    const transformed = autoConsole(code);
+    expect(transformed).toBe(
+      `const test = 0; {a: test;}`
+        .replace(/(\r\n|\n|\r)/gm, '')
+        .replace(/ /g, '')
     );
   });
 });

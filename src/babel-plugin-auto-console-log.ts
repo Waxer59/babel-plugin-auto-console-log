@@ -72,6 +72,9 @@ const autoConsole = function autoConsole(options = DEFAULT_OPTIONS) {
         ArrayExpression(path: any) {
           path.skip();
         },
+        LabeledStatement(path: any) {
+          path.skip();
+        },
         ExpressionStatement(path: any) {
           const { parent, parentPath } = path;
           if (
