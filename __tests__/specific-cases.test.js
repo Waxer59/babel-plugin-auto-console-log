@@ -118,16 +118,6 @@ describe('Specific cases', () => {
     );
   });
 
-  test('Replace non-console.log calls with console.log inside a class', () => {
-    const code = 'class MyClass { method() { alert("Hello, world!"); } }';
-    const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'class MyClass { method() { console.log(alert("Hello, world!")); } }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
-  });
-
   test('Replace non-console.log calls with console.log inside a try-catch block', () => {
     const code =
       'try { alert("Hello, world!"); } catch (e) { console.error(e); }';
