@@ -4,107 +4,79 @@ Babel.registerPlugin(
   'autoConsole',
   require('../dist/babel-plugin-auto-console-log.cjs')()
 );
+
+const clearInput = (input) =>
+  input.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '');
+
 const autoConsole = (code) =>
-  Babel.transform(code, {
-    plugins: ['autoConsole']
-  })
-    .code.replace(/(\r\n|\n|\r)/gm, '')
-    .replace(/ /g, '');
+  clearInput(Babel.transform(code, { plugins: ['autoConsole'] }).code);
 
 describe('Specific cases', () => {
   test('Does not replace console.log', () => {
     const code = 'console.log("Hello, world!");';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'console.log("Hello, world!");'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('console.log("Hello, world!");'));
   });
 
   test('Replaces non-console.log calls with console.log', () => {
     const code = 'alert("Hello, world!");';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'console.log(alert("Hello, world!"));'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('console.log(alert("Hello, world!"));')
     );
   });
 
   test('Does not replaces referenced identifiers with console.log on a console.log call', () => {
     const code = 'const foo = 42; console.log(foo);';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const foo = 42; console.log(foo);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const foo = 42; console.log(foo);'));
   });
 
   test('Does not replace binary expressions with console.log on variable declarations', () => {
     const code = 'const sum = 1 + 2; console.log(sum);';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'const sum = 1 + 2; console.log(sum);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('const sum = 1 + 2; console.log(sum);')
     );
   });
 
   test("Add console.log to a declarated variable that's not using console.log", () => {
     const code = 'const a = 1; a;';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const a = 1; console.log(a);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const a = 1; console.log(a);'));
   });
 
   test('Does not add console.log to a undeclarated variable', () => {
     const code = 'variable;';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'variable;'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('variable;'));
   });
 
   test('Do not add console.log to items that are inside a function.', () => {
     const code = 'function sayHi(){const hi = "hi"; hi;}';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'function sayHi(){const hi = "hi"; hi;}'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('function sayHi(){const hi = "hi"; hi;}')
     );
   });
 
   test('Add console.log to a mathematical operation.', () => {
     const code = '1+1;';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'console.log(1+1);'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('console.log(1+1);'));
   });
 
   test('Add console.log to a mathematical operation with a variable.', () => {
     const code = 'const n = 3; 1+n;';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const n = 3; console.log(1+n);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const n = 3; console.log(1+n);'));
   });
 
   test('Should not add console.log inside an if statement', () => {
     const code = 'if (true) { alert("Hello, world!"); }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'if (true) { console.log(alert("Hello, world!")); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('if (true) { console.log(alert("Hello, world!")); }')
     );
   });
 
@@ -112,19 +84,7 @@ describe('Specific cases', () => {
     const code = 'someFunction(alert("Hello, world!"));';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'console.log(someFunction(alert("Hello, world!")));'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
-  });
-
-  test('Replace non-console.log calls with console.log inside a class', () => {
-    const code = 'class MyClass { method() { alert("Hello, world!"); } }';
-    const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'class MyClass { method() { console.log(alert("Hello, world!")); } }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('console.log(someFunction(alert("Hello, world!")));')
     );
   });
 
@@ -133,9 +93,9 @@ describe('Specific cases', () => {
       'try { alert("Hello, world!"); } catch (e) { console.error(e); }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'try { console.log(alert("Hello, world!")); } catch (e) { console.error(e); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        'try { console.log(alert("Hello, world!")); } catch (e) { console.error(e); }'
+      )
     );
   });
 
@@ -143,9 +103,7 @@ describe('Specific cases', () => {
     const code = 'while (true) { alert("Hello, world!"); }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'while (true) { console.log(alert("Hello, world!")); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('while (true) { console.log(alert("Hello, world!")); }')
     );
   });
 
@@ -153,9 +111,9 @@ describe('Specific cases', () => {
     const code = 'for (let i = 0; i < 10; i++) { alert("Hello, world!"); }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); }'
+      )
     );
   });
 
@@ -163,46 +121,34 @@ describe('Specific cases', () => {
     const code = 'do { alert("Hello, world!"); } while (true);';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'do { console.log(alert("Hello, world!")); } while (true);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('do { console.log(alert("Hello, world!")); } while (true);')
     );
   });
   test('Does not add console.log to an arrow function expression', () => {
     const code = 'const add = (a, b) => a + b;';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const add = (a, b) => a + b;'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const add = (a, b) => a + b;'));
   });
 
   test('Does not add console.log to a function declaration', () => {
     const code = 'function multiply(a, b) {return a * b;}';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'function multiply(a, b) {return a * b;}'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('function multiply(a, b) {return a * b;}')
     );
   });
 
   test('Does not add console.log to a variable declarator', () => {
     const code = 'const str = "hello";';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const str = "hello";'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const str = "hello";'));
   });
 
   test('Add console.log to a ternary expression', () => {
     const code = 'const a = 1; const b = 2; a < b ? a : b;';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'const a = 1; const b = 2; console.log(a < b ? a : b);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('const a = 1; const b = 2; console.log(a < b ? a : b);')
     );
   });
 
@@ -210,81 +156,61 @@ describe('Specific cases', () => {
     const code = 'const a = 1; const b = 2; const min = a < b ? a : b;';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'const a = 1; const b = 2; const min = a < b ? a : b;'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('const a = 1; const b = 2; const min = a < b ? a : b;')
     );
   });
 
   test('Doesnt add console.log to a variable inside a switch statement', () => {
     const code = 'const a = 1; switch(a){}';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const a = 1; switch(a){}'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const a = 1; switch(a){}'));
   });
 
   test('Doesnt add console.log to a variable inside a if statement', () => {
     const code = 'const a = 1; if(a){}';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const a = 1; if(a){}'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const a = 1; if(a){}'));
   });
 
   test('Add console.log to a variable inside a case statement', () => {
     const code = 'const a = 1; switch(a){ case 1: a }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'const a = 1; switch(a){ case 1: console.log(a); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('const a = 1; switch(a){ case 1: console.log(a); }')
     );
   });
 
   test('Add console.log to a multiple mathematical operations', () => {
     const code = '2+2/2*4-5';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'console.log(2+2/2*4-5);'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('console.log(2+2/2*4-5);'));
   });
 
   test('Doesnt add console.log to a binary expression in a if statement', () => {
     const code = 'const a = 1; if(a===2){a}';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'const a = 1; if(a===2){console.log(a);}'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('const a = 1; if(a===2){console.log(a);}')
     );
   });
 
   test('Add console.log to a binary expression outside a statement', () => {
     const code = '1 === 2';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'console.log(1===2);'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('console.log(1===2);'));
   });
 
   test('Add console.log to a logical expression outside a statement', () => {
     const code = 'const a = 0; a || 2';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'const a = 0; console.log(a||2);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('const a = 0; console.log(a||2);'));
   });
 
   test('Doesnt add console.log to a logical combination expression inside a if statement', () => {
     const code = 'if(10 === 20 || 20 === 30 && 30 > 0){}';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'if(10 === 20 || 20 === 30 && 30 > 0){}'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('if(10 === 20 || 20 === 30 && 30 > 0){}')
     );
   });
 
@@ -292,28 +218,20 @@ describe('Specific cases', () => {
     const code = '10 === 20 || 20 === 30 && 30 > 0';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'console.log(10 === 20 || 20 === 30 && 30 > 0);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput('console.log(10 === 20 || 20 === 30 && 30 > 0);')
     );
   });
 
   test('Doesnt add console.log to a logical combination expression inside a while loop', () => {
     const code = 'while(10>20){}';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'while(10>20){}'.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('while(10>20){}'));
   });
 
   test('Add console.log to a update operator', () => {
     const code = 'let a = 0; a++';
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      'let a = 0;console.log(a++);'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput('let a = 0;console.log(a++);'));
   });
 
   test('Add console.log to a update operator inside a loop', () => {
@@ -321,9 +239,9 @@ describe('Specific cases', () => {
       'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); i++; }';
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); console.log(i++); }'
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        'for (let i = 0; i < 10; i++) { console.log(alert("Hello, world!")); console.log(i++); }'
+      )
     );
   });
 
@@ -333,11 +251,9 @@ describe('Specific cases', () => {
       do{}while(10>20 || 23 && 23);`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (let i = 0; i < 10 || 20; i++) {}
+      clearInput(`for (let i = 0; i < 10 || 20; i++) {}
       while(10>20 || 23 && 23){}
-      do{}while(10>20 || 23 && 23);`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      do{}while(10>20 || 23 && 23);`)
     );
   });
 
@@ -345,9 +261,9 @@ describe('Specific cases', () => {
     const code = `const a = 20; if(1 || 2 && 3 || a){}else if(1 || 2 && 3 || a){}`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const a = 20; if(1 || 2 && 3 || a){}else if(1 || 2 && 3 || a){}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `const a = 20; if(1 || 2 && 3 || a){}else if(1 || 2 && 3 || a){}`
+      )
     );
   });
 
@@ -355,29 +271,25 @@ describe('Specific cases', () => {
     const code = `const string = "Hello"; string[0]; const number = 2; string[number]; string[0][2]`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const string = "Hello"; console.log(string[0]); const number = 2; console.log(string[number]); console.log(string[0][2]);`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `const string = "Hello"; console.log(string[0]); const number = 2; console.log(string[number]); console.log(string[0][2]);`
+      )
     );
   });
 
   test('Add console.log to a unary expression', () => {
     const code = `![2,3,4][0];`;
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      `console.log(![2, 3, 4][0]);`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput(`console.log(![2, 3, 4][0]);`));
   });
 
   test('Add console.log to logical assigment (OR & AND)', () => {
     const code = `const a = { duration: 50, title: '' };a.duration ??= 10 ? 20 : 20; a.duration ||= 10 ? 20 : 20;`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const a = { duration: 50, title: '' };console.log(a.duration ??= 10 ? 20 : 20); console.log(a.duration ||= 10 ? 20 : 20);`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `const a = { duration: 50, title: '' };console.log(a.duration ??= 10 ? 20 : 20); console.log(a.duration ||= 10 ? 20 : 20);`
+      )
     );
   });
 
@@ -385,9 +297,9 @@ describe('Specific cases', () => {
     const code = `for (let i = 0; i < 10 || 20 || 230 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (let i = 0; i < 10 || 20 || 230 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `for (let i = 0; i < 10 || 20 || 230 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+      )
     );
   });
 
@@ -395,9 +307,9 @@ describe('Specific cases', () => {
     const code = `for (let i = 0; 0 ? 0 : 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (let i = 0; 0 ? 0 : 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `for (let i = 0; 0 ? 0 : 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+      )
     );
   });
 
@@ -405,9 +317,9 @@ describe('Specific cases', () => {
     const code = `for (let i = 0; 0 || 0 && 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (let i = 0; 0 || 0 && 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `for (let i = 0; 0 || 0 && 0 && 213; i+=20) { console.log(alert("Hello, world!")); console.log(i++); };`
+      )
     );
   });
 
@@ -415,28 +327,20 @@ describe('Specific cases', () => {
     const code = `let a = 0; while(a+=2){} while(a++){}`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `let a = 0; while(a+=2){} while(a++){}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`let a = 0; while(a+=2){} while(a++){}`)
     );
   });
 
   test('Doesnt add console.log to a update operator inside a if', () => {
     const code = `let a = 0; if(a++){}`;
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      `let a = 0; if(a++){}`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput(`let a = 0; if(a++){}`));
   });
 
   test('Add console.log to a await operator', () => {
     const code = `await test();`;
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      `console.log(await test());`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput(`console.log(await test());`));
   });
 
   test('Doesnt add console.log to a member expression inside a if statement', () => {
@@ -444,10 +348,8 @@ describe('Specific cases', () => {
     if(message.includes("asd")){}`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const message = "!asd";
-      if(message.includes("asd")){}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`const message = "!asd";
+      if(message.includes("asd")){}`)
     );
   });
 
@@ -456,10 +358,8 @@ describe('Specific cases', () => {
     if(!message.includes("asd")){}`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const message = "!asd";
-      if(!message.includes("asd")){}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`const message = "!asd";
+      if(!message.includes("asd")){}`)
     );
   });
 
@@ -468,10 +368,8 @@ describe('Specific cases', () => {
     if(message.includes){}`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const message = "!asd";
-      if(message.includes){}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`const message = "!asd";
+      if(message.includes){}`)
     );
   });
 
@@ -479,9 +377,9 @@ describe('Specific cases', () => {
     const code = `switch(true){ case 1==1: break; case 2==2: break; default: break; }`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `switch(true){ case 1==1: break; case 2==2: break; default: break; }`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(
+        `switch(true){ case 1==1: break; case 2==2: break; default: break; }`
+      )
     );
   });
 
@@ -489,9 +387,7 @@ describe('Specific cases', () => {
     const code = `for (const el of json){console.log(el)};`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (const el of json) {console.log(el);};`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`for (const el of json) {console.log(el);};`)
     );
   });
 
@@ -499,9 +395,7 @@ describe('Specific cases', () => {
     const code = `for (const el in json) {console.log(el);};`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (const el in json){console.log(el);};`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`for (const el in json){console.log(el);};`)
     );
   });
 
@@ -509,9 +403,7 @@ describe('Specific cases', () => {
     const code = `for (const el of Object.keys(json)){console.log(el)};`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (const el of Object.keys(json)) {console.log(el);};`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`for (const el of Object.keys(json)) {console.log(el);};`)
     );
   });
 
@@ -519,35 +411,68 @@ describe('Specific cases', () => {
     const code = `for (const el in Object.keys(json)) {console.log(el);};`;
     const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `for (const el in Object.keys(json)){console.log(el);};`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`for (const el in Object.keys(json)){console.log(el);};`)
     );
   });
 
   test('Should add console.log to a New keyword expression', () => {
     const code = `new Date()`;
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      `console.log(new Date());`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput(`console.log(new Date());`));
   });
 
   test('Should add console.log to a rest operator in a array', () => {
     const code = `[1,2,...test]`;
     const transformed = autoConsole(code);
-    expect(transformed).toBe(
-      `[1,2,...test];`.replace(/(\r\n|\n|\r)/gm, '').replace(/ /g, '')
-    );
+    expect(transformed).toBe(clearInput(`[1,2,...test];`));
   });
 
   test('Should not add console.log to a labeled stmt', () => {
     const code = `const test = 0; {a: test}`;
     const transformed = autoConsole(code);
+    expect(transformed).toBe(clearInput(`const test = 0; {a: test;}`));
+  });
+
+  test('Should not add console.log inside a class', () => {
+    const code = `
+    class Test {
+      constructor (name) {
+          this.name = name;
+      }
+  
+      greet () {
+        console.log("Hello I am a cat, and my name is " + this.name);
+      }
+    }
+    class Developer extends Test {
+      constructor (name) {
+          super(name);
+      }
+  
+      writeCode (coffe) {
+          console.log(coffe);
+      }
+    }`;
+    const transformed = autoConsole(code);
     expect(transformed).toBe(
-      `const test = 0; {a: test;}`
-        .replace(/(\r\n|\n|\r)/gm, '')
-        .replace(/ /g, '')
+      clearInput(`class Test {
+        constructor (name) {
+            this.name = name;
+        }
+    
+        greet () {
+          console.log("Hello I am a cat, and my name is " + this.name);
+        }
+      }
+      class Developer extends Test {
+        constructor (name) {
+            super(name);
+        }
+    
+        writeCode (coffe) {
+            console.log(coffe);
+        }
+      }`)
     );
   });
 });
