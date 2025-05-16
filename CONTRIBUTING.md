@@ -34,6 +34,38 @@ To run the tests, you will need to have Node.js installed on your computer. Afte
 If you encounter a bug or wish to request a new feature, please open a new issue in the repository.
 
 ## Code of Conduct
+Claro, aquí tienes un **Código de Conducta** profesional y claro para incluir en el archivo `CONTRIBUTING.md` de tu proyecto `babel-plugin-auto-console-log`:
+
+---
+
+## Code of Conduct
+
+To foster an open and welcoming environment, we as contributors and maintainers pledge to respect all individuals who contribute through reporting issues, posting feature requests, updating documentation, submitting pull requests, or engaging in any other activities.
+
+We are committed to making participation in this project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
+
+### Our Standards
+
+Examples of behavior that contributes to a positive environment include:
+
+* Being respectful of differing viewpoints and experiences
+* Gracefully accepting constructive criticism
+* Focusing on what is best for the project
+* Showing empathy toward other community members
+
+Examples of unacceptable behavior include:
+
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others’ private information, such as a physical or electronic address, without explicit permission
+* Other conduct which could reasonably be considered inappropriate in a professional setting
+
+### Enforcement
+
+Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, issues, and other contributions that are not aligned with this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening an issue or contacting a maintainer directly.
 
 ## License
 
